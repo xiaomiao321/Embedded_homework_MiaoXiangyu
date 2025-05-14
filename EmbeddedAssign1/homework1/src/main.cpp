@@ -1,22 +1,42 @@
 #include <Arduino.h>
+
+// 定义引脚数组
+const int ledPins[] = {18, 19, 21, 22, 26, 27}; // 替换后两个引脚
+const int numPins = 6; 
+
 void setup() {
-  // 设定主角（程序里的变量对应硬件的引脚），引脚功能/作用（输入/输出）
-for(int i = 2; i < 8; i++)
-pinMode(i,OUTPUT);
-}
- 
-void loop() {
-  //来回for循环，设置好起止点
-for(int i = 2; i < 8; i++ )
-  {
-    digitalWrite(i , HIGH);
-    delay(500);
-    digitalWrite(i , LOW);
+  // 初始化引脚为输出
+  for (int i = 0; i < numPins; i++) {
+    pinMode(ledPins[i], OUTPUT);
+    digitalWrite(ledPins[i], LOW); // 确保初始状态为熄灭
   }
-  for(int i = 7;i > 2;i--)
-  {
-    digitalWrite(i , HIGH);
+  Serial.begin(115200); 
+}
+
+void loop() {
+  // 正向流水灯
+  for (int i = 0; i < numPins; i++) {
+    digitalWrite(ledPins[i], HIGH); // 点亮当前 LED
+    Serial.print("Pin ");
+    Serial.print(ledPins[i]);
+    Serial.println(" ON");
     delay(500);
-    digitalWrite(i , LOW);
-    }
+    digitalWrite(ledPins[i], LOW); // 熄灭当前 LED
+    Serial.print("Pin ");
+    Serial.print(ledPins[i]);
+    Serial.println(" OFF");
+  }
+
+  // 反向流水灯
+  for (int i = numPins - 1; i >= 0; i--) {
+    digitalWrite(ledPins[i], HIGH); // 点亮当前 LED
+    Serial.print("Pin ");
+    Serial.print(ledPins[i]);
+    Serial.println(" ON");
+    delay(500);
+    digitalWrite(ledPins[i], LOW); // 熄灭当前 LED
+    Serial.print("Pin ");
+    Serial.print(ledPins[i]);
+    Serial.println(" OFF");
+  }
 }
